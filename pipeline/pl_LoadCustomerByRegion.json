@@ -67,7 +67,7 @@
 										"Region": {
 											"type": "String",
 											"value": {
-												"value": "@item().name",
+												"value": "@item().Region",
 												"type": "Expression"
 											}
 										}
