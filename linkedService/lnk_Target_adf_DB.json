@@ -1,0 +1,17 @@
+{
+	"name": "lnk_Target_adf_DB",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "pinkz.database.windows.net",
+			"database": "Target-adf-DB",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "pinkz",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEZBMzVDMkM1LTFBNEMtNENFNi1BOTNGLUUyRDU4MDQ5NDlCQV8yYzdhY2ZhZS0zNzgxLTQ0NjktYmZkYy04MDdkZWY4NjY3MjUiDQp9"
+		}
+	}
+}
