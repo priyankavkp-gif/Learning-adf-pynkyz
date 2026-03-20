@@ -1,0 +1,26 @@
+{
+	"name": "ds_RegionList",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnk_Source_adf_DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Region_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Region",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tbl_Region"
+		}
+	}
+}
