@@ -1,0 +1,9 @@
+{
+	"name": "Learning-ADF-pynkyz",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f783b528-f671-44c3-b2c4-e6c1cb0dac43",
+		"tenantId": "6032fe65-1bc2-4175-ab38-2e92d4c558d2"
+	}
+}
