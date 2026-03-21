@@ -1,0 +1,12 @@
+{
+	"name": "lnk_blobstrg",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=pinkzstrgaccount;EndpointSuffix=core.windows.net;",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEZBMzVDMkM1LTFBNEMtNENFNi1BOTNGLUUyRDU4MDQ5NDlCQV9iNTQzODUwMC1jMjJhLTQxODctOGQ1OC0xZDQ4OTZkNTFjNzkiDQp9"
+		}
+	}
+}
