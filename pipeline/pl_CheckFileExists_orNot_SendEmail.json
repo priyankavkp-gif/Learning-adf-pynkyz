@@ -66,7 +66,7 @@
 								"method": "POST",
 								"url": "https://prod-59.eastus2.logic.azure.com:443/workflows/fedc1c299e7c4d2b8f50491eead1e7a4/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=hniTjBS6kUlKr2Kz9WIuuJHAGzbRHUJMwBk5C5iWXiY",
 								"body": {
-									"value": "{\n   \"FileName\":\"@{activity('Get Metadata HR_Dept').output.itemName}\",\n   \"Pipeline Name\":\"@{pipeline().Pipeline}\",\n   \"DataFactoryName\":\"@{pipeline().DataFactory}\",\n   \"FileExists\":\"File Exists\"\n}",
+									"value": "{\n   \"FileName\":\"@{activity('Get Metadata HR_Dept').output.itemName}\",\n   \"PipelineName\":\"@{pipeline().Pipeline}\",\n   \"DataFactory Name\":\"@{pipeline().DataFactory}\",\n   \"FileExists\":\"File Exists in Blob, go ahead with loading data\"\n}",
 									"type": "Expression"
 								}
 							}
