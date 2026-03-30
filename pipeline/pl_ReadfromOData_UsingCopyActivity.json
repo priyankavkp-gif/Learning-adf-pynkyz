@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "ODataSource",
+						"query": "\"$select=Name, IcaoCode\"",
 						"httpRequestTimeout": "00:05:00"
 					},
 					"sink": {
