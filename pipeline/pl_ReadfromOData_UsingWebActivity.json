@@ -20,7 +20,7 @@
 				}
 			},
 			{
-				"name": "Set variable FileContent from Web Activity",
+				"name": "Set variable - save contents from Web Activity",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -38,7 +38,7 @@
 				"typeProperties": {
 					"variableName": "OData_FileContent",
 					"value": {
-						"value": "@activity('WebActivity-readfromOData').output",
+						"value": "@string(activity('WebActivity-readfromOData').output)",
 						"type": "Expression"
 					}
 				}
