@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-pynkyz"
+		},
+		"lnk_Source_adf_DB_password": {
+			"value": ""
+		},
+		"lnk_Target_adf_DB_password": {
+			"value": ""
+		},
+		"lnk_blobstrg_connectionString": {
+			"value": ""
+		},
+		"lnk_pynkyzstrgacct_connectionString": {
+			"value": ""
+		},
+		"link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint": {
+			"value": "https://pynkyzstrgacct.blob.core.windows.net/"
+		},
+		"lnk_ODataResource_properties_typeProperties_url": {
+			"value": "https://services.odata.org/TripPinRESTierService/"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_server": {
+			"value": "pinkz.database.windows.net"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_database": {
+			"value": "Source-adf-DB"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_userName": {
+			"value": "pinkz"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_server": {
+			"value": "pinkz.database.windows.net"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_database": {
+			"value": "Target-adf-DB"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_userName": {
+			"value": "pinkz"
+		}
+	}
+}

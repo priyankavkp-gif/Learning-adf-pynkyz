@@ -1,0 +1,126 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-pynkyz"
+		},
+		"lnk_Source_adf_DB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_Source_adf_DB'"
+		},
+		"lnk_Target_adf_DB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_Target_adf_DB'"
+		},
+		"lnk_blobstrg_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'lnk_blobstrg'"
+		},
+		"lnk_pynkyzstrgacct_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'lnk_pynkyzstrgacct'"
+		},
+		"link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://pynkyzstrgacct.blob.core.windows.net/"
+		},
+		"lnk_ODataResource_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/TripPinRESTierService/"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkz.database.windows.net"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Source-adf-DB"
+		},
+		"lnk_Source_adf_DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkz.database.windows.net"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Target-adf-DB"
+		},
+		"lnk_Target_adf_DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADF-pynkyz_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"lnk_Source_adf_DB_password": {
+						"value": "[parameters('lnk_Source_adf_DB_password')]"
+					},
+					"lnk_Target_adf_DB_password": {
+						"value": "[parameters('lnk_Target_adf_DB_password')]"
+					},
+					"lnk_blobstrg_connectionString": {
+						"value": "[parameters('lnk_blobstrg_connectionString')]"
+					},
+					"lnk_pynkyzstrgacct_connectionString": {
+						"value": "[parameters('lnk_pynkyzstrgacct_connectionString')]"
+					},
+					"link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint')]"
+					},
+					"lnk_ODataResource_properties_typeProperties_url": {
+						"value": "[parameters('lnk_ODataResource_properties_typeProperties_url')]"
+					},
+					"lnk_Source_adf_DB_properties_typeProperties_server": {
+						"value": "[parameters('lnk_Source_adf_DB_properties_typeProperties_server')]"
+					},
+					"lnk_Source_adf_DB_properties_typeProperties_database": {
+						"value": "[parameters('lnk_Source_adf_DB_properties_typeProperties_database')]"
+					},
+					"lnk_Source_adf_DB_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_Source_adf_DB_properties_typeProperties_userName')]"
+					},
+					"lnk_Target_adf_DB_properties_typeProperties_server": {
+						"value": "[parameters('lnk_Target_adf_DB_properties_typeProperties_server')]"
+					},
+					"lnk_Target_adf_DB_properties_typeProperties_database": {
+						"value": "[parameters('lnk_Target_adf_DB_properties_typeProperties_database')]"
+					},
+					"lnk_Target_adf_DB_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_Target_adf_DB_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
