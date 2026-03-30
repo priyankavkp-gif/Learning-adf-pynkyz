@@ -20,8 +20,8 @@
 				}
 			},
 			{
-				"name": "WebActivity_writetoBlob",
-				"type": "WebActivity",
+				"name": "Set variable FileContent from Web Activity",
+				"type": "SetVariable",
 				"dependsOn": [
 					{
 						"activity": "WebActivity-readfromOData",
@@ -31,31 +31,24 @@
 					}
 				],
 				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"method": "PUT",
-					"headers": {
-						"x-ms-version": "2017-11-09",
-						"x-ms-blob-type": "BlockBlob"
-					},
-					"url": "https://pynkyzstrgacct.blob.core.windows.net/output-files/ODataPeople.txt",
-					"body": {
-						"value": "@activity('WebActivity-readfromOData').output.response",
+					"variableName": "OData_FileContent",
+					"value": {
+						"value": "@activity('WebActivity-readfromOData').output",
 						"type": "Expression"
-					},
-					"authentication": {
-						"type": "MSI",
-						"resource": "https://storage.azure.com/"
 					}
 				}
 			}
 		],
+		"variables": {
+			"OData_FileContent": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
