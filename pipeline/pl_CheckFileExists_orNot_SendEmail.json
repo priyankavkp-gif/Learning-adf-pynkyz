@@ -1,0 +1,83 @@
+{
+	"name": "pl_CheckFileExists_orNot_SendEmail",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata HR_Dept",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_HRDept",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"exists"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata HR_Dept",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('Get Metadata HR_Dept').output.exists",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "WebActivity_SendEmail_FileDetails",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"url": "https://pynkyz.blob.core.windows.net/input-file/HR_Dept.txt",
+								"body": {
+									"value": "{\n   \"FileName\":\"@{activity('Get Metadata HR_Dept').output.itemName}\",\n   \"Pipeline Name\":\"@{pipeline().Pipeline}\",\n   \"DataFactoryName\":\"@{pipeline().DataFactory}\",\n   \"FileExists\":\"@{activity('Get Metadata HR_Dept').output.exists}\"\n}",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": "https:/storage.azure.com/"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
