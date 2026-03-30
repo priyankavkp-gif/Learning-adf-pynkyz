@@ -1,12 +1,12 @@
 {
 	"name": "link_pynkyzstrgacct",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"connectionString": "DefaultEndpointsProtocol=https;AccountName=pynkyzstrgacct;EndpointSuffix=core.windows.net;",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEQ5MUREOTcwLUMxNTEtNDUwRC04NTMzLTVCRUY0RDlDQTQ3M19lODY4OTNhZi00ZDAzLTRiMTQtOGQ2OS04N2IyNGU5ODQwZDYiDQp9"
+			"serviceEndpoint": "https://pynkyzstrgacct.blob.core.windows.net/",
+			"accountKind": "StorageV2"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
