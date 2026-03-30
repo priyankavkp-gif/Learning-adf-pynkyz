@@ -1,0 +1,54 @@
+{
+	"name": "pl_ReadfromOData_UsingWebActivity",
+	"properties": {
+		"activities": [
+			{
+				"name": "WebActivity-readfromOData",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://services.odata.org/TripPinRESTierService/People('russellwhyte')"
+				}
+			},
+			{
+				"name": "Set variable - save contents from Web Activity",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "WebActivity-readfromOData",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "OData_FileContent",
+					"value": {
+						"value": "@string(activity('WebActivity-readfromOData').output)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"OData_FileContent": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

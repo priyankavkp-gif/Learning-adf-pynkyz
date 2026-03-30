@@ -1,0 +1,15 @@
+{
+	"name": "ODataResourceConnector",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnk_ODataResource",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "ODataResource",
+		"schema": [],
+		"typeProperties": {
+			"path": "Airports"
+		}
+	}
+}
