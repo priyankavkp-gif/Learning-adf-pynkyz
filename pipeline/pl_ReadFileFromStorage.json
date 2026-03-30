@@ -26,8 +26,37 @@
 						"resource": "https://storage.azure.com/"
 					}
 				}
+			},
+			{
+				"name": "Set variable Save contents of HR_Dept",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "WebActivity_Read_Blob_StorageFile",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileContent",
+					"value": {
+						"value": "@activity('WebActivity_Read_Blob_StorageFile').output.response",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"FileContent": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
