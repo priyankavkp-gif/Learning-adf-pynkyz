@@ -45,6 +45,10 @@
 						"x-ms-blob-type": "BlockBlob"
 					},
 					"url": "https://pynkyzstrgacct.blob.core.windows.net/output-files/ODataPeople.txt",
+					"body": {
+						"value": "@activity('WebActivity-readfromOData').output.response",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://storage.azure.com/"
