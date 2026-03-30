@@ -63,7 +63,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "POST",
-								"url": "https://pynkyz.blob.core.windows.net/input-file/HR_Dept.txt",
+								"url": "https://pynkyzstrgacct.blob.core.windows.net/input-file/HR_Dept.txt",
 								"body": {
 									"value": "{\n   \"FileName\":\"@{activity('Get Metadata HR_Dept').output.itemName}\",\n   \"Pipeline Name\":\"@{pipeline().Pipeline}\",\n   \"DataFactoryName\":\"@{pipeline().DataFactory}\",\n   \"FileExists\":\"@{activity('Get Metadata HR_Dept').output.exists}\"\n}",
 									"type": "Expression"
