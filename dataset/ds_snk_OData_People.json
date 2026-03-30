@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "OData_People.txt",
+				"fileName": "OData_File.txt",
 				"container": "output-files"
 			},
 			"columnDelimiter": ",",
