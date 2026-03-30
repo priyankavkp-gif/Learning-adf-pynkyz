@@ -49,6 +49,28 @@
 						"value": "@activity('Get Metadata HR_Dept').output.exists\n",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "WebActivity_FileNotExists",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"body": {
+									"value": "concat{\n\"FileName\":\"{@activity('Get Metadata HR_Dept').output.itemName}\",\n\"FileExists\":\" does not exists\"\n\n}",
+									"type": "Expression"
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "WebActivity_SendEmail_FileDetails",
