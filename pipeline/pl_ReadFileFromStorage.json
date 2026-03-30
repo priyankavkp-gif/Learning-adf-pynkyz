@@ -16,6 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "GET",
+					"headers": {
+						"x-ms-version": "2017-11-09",
+						"x-ms-blob-type": "BlockBlob"
+					},
 					"url": "https://pynkyzstrgacct.blob.core.windows.net/input-files/HR_Dept.txt",
 					"authentication": {
 						"type": "MSI",
