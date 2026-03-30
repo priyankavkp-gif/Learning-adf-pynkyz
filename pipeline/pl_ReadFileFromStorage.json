@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "GET",
-					"url": "https://pynkyz.blob.core.windows.net/input-files/HR_Dept.txt",
+					"url": "https://pynkyzstrgacct.blob.core.windows.net/input-files/HR_Dept.txt",
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://storage.azure.com/"
