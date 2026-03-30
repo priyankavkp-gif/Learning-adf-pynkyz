@@ -9,7 +9,7 @@
 		"type": "ODataResource",
 		"schema": [],
 		"typeProperties": {
-			"path": "People"
+			"path": "Airports"
 		}
 	}
 }
