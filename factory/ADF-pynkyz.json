@@ -1,0 +1,15 @@
+{
+	"name": "ADF-pynkyz",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned,UserAssigned",
+		"principalId": "67b605d4-dc23-4fd4-bb0b-a620dbf6d690",
+		"tenantId": "6032fe65-1bc2-4175-ab38-2e92d4c558d2",
+		"userAssignedIdentities": {
+			"/subscriptions/23482a43-f4e4-4cfe-a909-3ee4b0e73898/resourcegroups/pynkyz-res-grp/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ADF-pynkyz": {
+				"clientId": "53f6806c-94b2-4010-bbd3-bb2e9bb15352",
+				"principalId": "62cac625-e593-4da6-aacc-312fdd359d6b"
+			}
+		}
+	}
+}
