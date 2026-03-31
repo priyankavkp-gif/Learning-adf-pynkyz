@@ -88,6 +88,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "GET",
+								"headers": {
+									"x-ms-version": "2017-11-09",
+									"x-ms-blob-type": "BlockBlob"
+								},
 								"url": {
 									"value": "@variables('var_sqlfilepath')",
 									"type": "Expression"
