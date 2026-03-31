@@ -79,7 +79,9 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -94,7 +96,13 @@
 							"inputs": [
 								{
 									"referenceName": "ds_pynkyzstrg_inputfiles",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"p_FileName": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
