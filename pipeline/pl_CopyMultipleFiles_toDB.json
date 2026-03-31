@@ -95,11 +95,11 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_inputfiles",
+									"referenceName": "ds_pynkyzstrg_inputfiles",
 									"type": "DatasetReference",
 									"parameters": {
 										"p_FileName": {
-											"value": "@item().Name",
+											"value": "@item().p_FileName",
 											"type": "Expression"
 										}
 									}
@@ -111,7 +111,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"p_TblName": {
-											"value": "@item().Name",
+											"value": "@item().p_TblName",
 											"type": "Expression"
 										}
 									}
