@@ -69,7 +69,6 @@
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
-										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -99,7 +98,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"p_FileName": {
-											"value": "@item()",
+											"value": "@item().Name",
 											"type": "Expression"
 										}
 									}
@@ -111,7 +110,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"p_TblName": {
-											"value": "@item()",
+											"value": "@item().Name",
 											"type": "Expression"
 										}
 									}
