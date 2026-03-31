@@ -63,7 +63,7 @@
 							"typeProperties": {
 								"variableName": "FileFullPath",
 								"value": {
-									"value": "@concat('\\input-files\\','item().Name')",
+									"value": "concat('@{activity('Get Metadatafrom input-files').output.itemName}',item().FileName)",
 									"type": "Expression"
 								}
 							}
@@ -71,6 +71,8 @@
 						{
 							"name": "Web send email with File contents",
 							"type": "WebActivity",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Set variable",
