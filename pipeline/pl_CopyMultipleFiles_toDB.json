@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"name": "LoopThruallFiles",
+				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -52,7 +52,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data from blob to DB",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -69,7 +69,7 @@
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
-										"wildcardFileName": "*.*",
+										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -79,9 +79,7 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"tableOption": "autoCreate",
-									"disableMetricsCollection": false
+									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -96,13 +94,7 @@
 							"inputs": [
 								{
 									"referenceName": "ds_pynkyzstrg_inputfiles",
-									"type": "DatasetReference",
-									"parameters": {
-										"p_FileName": {
-											"value": "@item().Name",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -111,7 +103,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"p_TblName": {
-											"value": "@item().Name",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
