@@ -105,6 +105,9 @@
 		"variables": {
 			"FileFullPath": {
 				"type": "String"
+			},
+			"FolderName": {
+				"type": "String"
 			}
 		},
 		"annotations": []
