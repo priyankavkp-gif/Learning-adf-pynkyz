@@ -125,7 +125,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@activity('Web').output.response",
+										"value": "@concat(activity('Web').output.Response,' Select 1')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
