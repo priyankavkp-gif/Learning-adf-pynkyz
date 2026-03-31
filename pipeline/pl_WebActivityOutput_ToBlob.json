@@ -67,7 +67,7 @@
 						"type": "DelimitedTextSource",
 						"additionalColumns": [
 							{
-								"name": "mycolumn",
+								"name": "mycolumnfromdummyjson",
 								"value": {
 									"value": "@variables('var_products')",
 									"type": "Expression"
