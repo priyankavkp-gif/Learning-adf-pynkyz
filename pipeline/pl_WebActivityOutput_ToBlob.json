@@ -36,23 +36,17 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_prod",
+					"variableName": "var_products",
 					"value": {
-						"value": "@activity('Web_Dummyjson').output",
+						"value": "@{activity('Web_Dummyjson').output}",
 						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
-			"var_Products": {
-				"type": "String"
-			},
 			"var_products": {
-				"type": "Array"
-			},
-			"var_prod": {
-				"type": "Array"
+				"type": "String"
 			}
 		},
 		"annotations": []
