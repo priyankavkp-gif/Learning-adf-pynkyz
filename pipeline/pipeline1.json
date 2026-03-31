@@ -25,6 +25,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -71,8 +72,6 @@
 						{
 							"name": "Web send email with File contents",
 							"type": "WebActivity",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Set variable",
@@ -104,9 +103,6 @@
 		],
 		"variables": {
 			"FileFullPath": {
-				"type": "String"
-			},
-			"FolderName": {
 				"type": "String"
 			}
 		},
