@@ -1,0 +1,21 @@
+{
+	"name": "lnk_Learn_SQLDB",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "DESKTOP-DB89R7L\\SQLEXPRESS",
+			"database": "Learn_SQLDB",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "DESKTOPDB89R7LSQLA",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmMmYxM2Q2MC02YjQ3LTQ3NTgtODc2My00YmYzOThlZTlhNTYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "ADFSelfHostedIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
