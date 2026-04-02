@@ -5,12 +5,20 @@
 			"referenceName": "lnk_Learn_SQLDB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"p_TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "tbl_Orders"
+			"table": {
+				"value": "@dataset().p_TableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
