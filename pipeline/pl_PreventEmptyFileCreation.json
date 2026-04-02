@@ -89,6 +89,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderQuery": "Select name from sys.tables",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -118,7 +119,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "If Condition1_copy1",
+							"name": "If Condition check if table has first row",
 							"type": "IfCondition",
 							"dependsOn": [],
 							"userProperties": [],
@@ -129,7 +130,7 @@
 								},
 								"ifTrueActivities": [
 									{
-										"name": "Copy datafromOnPremSQL_toBlob_copy1",
+										"name": "Copy data1",
 										"type": "Copy",
 										"dependsOn": [],
 										"policy": {
@@ -146,49 +147,12 @@
 												"queryTimeout": "02:00:00",
 												"partitionOption": "None"
 											},
-											"sink": {
-												"type": "DelimitedTextSink",
-												"storeSettings": {
-													"type": "AzureBlobStorageWriteSettings"
-												},
-												"formatSettings": {
-													"type": "DelimitedTextWriteSettings",
-													"quoteAllText": true,
-													"fileExtension": ".txt"
-												}
-											},
-											"enableStaging": false,
-											"translator": {
-												"type": "TabularTranslator",
-												"typeConversion": true,
-												"typeConversionSettings": {
-													"allowDataTruncation": true,
-													"treatBooleanAsNumber": false
-												}
-											}
+											"enableStaging": false
 										},
 										"inputs": [
 											{
 												"referenceName": "ds_tbl_Orders",
-												"type": "DatasetReference",
-												"parameters": {
-													"p_TableName": {
-														"value": "@activity('LookupLearn_SQLDB').output.value",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "ds_snk_tblOrders",
-												"type": "DatasetReference",
-												"parameters": {
-													"p_FileName": {
-														"value": "@activity('LookupLearn_SQLDB').output.value",
-														"type": "Expression"
-													}
-												}
+												"type": "DatasetReference"
 											}
 										]
 									}
