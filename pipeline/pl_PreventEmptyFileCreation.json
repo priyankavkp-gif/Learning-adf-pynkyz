@@ -125,7 +125,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@item().name",
+									"value": "@activity('LookupLearn_SQLDB').output.value",
 									"type": "Expression"
 								},
 								"ifTrueActivities": [
