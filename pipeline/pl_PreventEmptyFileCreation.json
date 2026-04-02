@@ -100,8 +100,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "If Condition2",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "LookupLearn_SQLDB",
@@ -112,89 +112,74 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "@activity('LookupLearn_SQLDB').output.value",
+					"expression": {
+						"value": "@contains(activity('LookupLearn_SQLDB').output,'firstrow')",
 						"type": "Expression"
 					},
-					"isSequential": true,
-					"activities": [
+					"ifTrueActivities": [
 						{
-							"name": "If Condition check if table has first row",
-							"type": "IfCondition",
+							"name": "Copy data1",
+							"type": "Copy",
 							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"expression": {
-									"value": "@activity('LookupLearn_SQLDB').output.value",
-									"type": "Expression"
+								"source": {
+									"type": "SqlServerSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
-								"ifTrueActivities": [
-									{
-										"name": "Copy data1",
-										"type": "Copy",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "SqlServerSource",
-												"queryTimeout": "02:00:00",
-												"partitionOption": "None"
-											},
-											"sink": {
-												"type": "DelimitedTextSink",
-												"storeSettings": {
-													"type": "AzureBlobStorageWriteSettings"
-												},
-												"formatSettings": {
-													"type": "DelimitedTextWriteSettings",
-													"quoteAllText": true,
-													"fileExtension": ".txt"
-												}
-											},
-											"enableStaging": false,
-											"translator": {
-												"type": "TabularTranslator",
-												"typeConversion": true,
-												"typeConversionSettings": {
-													"allowDataTruncation": true,
-													"treatBooleanAsNumber": false
-												}
-											}
-										},
-										"inputs": [
-											{
-												"referenceName": "ds_tbl_Orders",
-												"type": "DatasetReference",
-												"parameters": {
-													"p_TableName": {
-														"value": "@activity('LookupLearn_SQLDB').output.value",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "ds_snk_tblOrders",
-												"type": "DatasetReference",
-												"parameters": {
-													"p_FileName": {
-														"value": "@activity('LookupLearn_SQLDB').output.value",
-														"type": "Expression"
-													}
-												}
-											}
-										]
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
 									}
-								]
-							}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_learnsqlDB",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_TableName": {
+											"value": "@activity('LookupLearn_SQLDB').output.value",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_snk_tblOrders",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_FileName": {
+											"value": "@activity('LookupLearn_SQLDB').output.value",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}
