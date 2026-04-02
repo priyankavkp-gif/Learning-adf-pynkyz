@@ -61,13 +61,7 @@
 							"outputs": [
 								{
 									"referenceName": "ds_snk_tblOrders",
-									"type": "DatasetReference",
-									"parameters": {
-										"p_FileName": {
-											"value": "@activity('LookupLearn_SQLDB').output.value",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
@@ -159,25 +153,13 @@
 							"inputs": [
 								{
 									"referenceName": "ds_learnsqlDB",
-									"type": "DatasetReference",
-									"parameters": {
-										"p_TableName": {
-											"value": "@activity('LookupLearn_SQLDB').output.value",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "ds_snk_tblOrders",
-									"type": "DatasetReference",
-									"parameters": {
-										"p_FileName": {
-											"value": "@activity('LookupLearn_SQLDB').output.value",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
