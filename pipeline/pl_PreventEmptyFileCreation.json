@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@activity('LookupLearn_SQLDB').output.value",
+						"value": "@activity('LookupLearn_SQLDB').output.'FirstRow'",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
