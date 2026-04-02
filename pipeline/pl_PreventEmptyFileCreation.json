@@ -147,12 +147,49 @@
 												"queryTimeout": "02:00:00",
 												"partitionOption": "None"
 											},
-											"enableStaging": false
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobStorageWriteSettings"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
 										},
 										"inputs": [
 											{
 												"referenceName": "ds_tbl_Orders",
-												"type": "DatasetReference"
+												"type": "DatasetReference",
+												"parameters": {
+													"p_TableName": {
+														"value": "@activity('LookupLearn_SQLDB').output.value",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_snk_tblOrders",
+												"type": "DatasetReference",
+												"parameters": {
+													"p_FileName": {
+														"value": "@activity('LookupLearn_SQLDB').output.value",
+														"type": "Expression"
+													}
+												}
 											}
 										]
 									}
