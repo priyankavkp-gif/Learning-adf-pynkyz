@@ -1,0 +1,24 @@
+{
+	"name": "foreach_lkp_src",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnk_Learn_SQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"for_p_tblname": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().for_p_tblname",
+				"type": "Expression"
+			}
+		}
+	}
+}
