@@ -1,0 +1,15 @@
+{
+	"name": "src_ds_LearnSQLDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnk_Learn_SQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo"
+		}
+	}
+}
