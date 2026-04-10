@@ -14,9 +14,13 @@
 				"container": "sql-files"
 			},
 			"columnDelimiter": ",",
+			"rowDelimiter": {
+				"value": ";",
+				"type": "Expression"
+			},
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
-			"quoteChar": "'"
+			"quoteChar": ""
 		},
 		"schema": []
 	}
