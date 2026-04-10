@@ -13,11 +13,7 @@
 				"fileName": "sqlstmts.txt",
 				"container": "sql-files"
 			},
-			"columnDelimiter": ",",
-			"rowDelimiter": {
-				"value": ";",
-				"type": "Expression"
-			},
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": ""
