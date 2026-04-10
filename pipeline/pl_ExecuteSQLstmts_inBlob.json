@@ -1,5 +1,5 @@
 {
-	"name": "pl_",
+	"name": "pl_ExecuteSQLstmts_inBlob",
 	"properties": {
 		"activities": [
 			{
@@ -68,7 +68,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@item().SQLStatemnets",
+										"value": "@concat(item().SQLStatements,' Select 1 as output')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
