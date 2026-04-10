@@ -1,0 +1,23 @@
+{
+	"name": "ds_sqlstmts_sqlfiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "link_pynkyzstrgacct",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "sqlstmts.txt",
+				"container": "sql-files"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
