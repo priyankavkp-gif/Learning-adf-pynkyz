@@ -1,0 +1,24 @@
+{
+	"name": "ds_SQLDB_pinkyz",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnk_SQLDB_HRDB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"param_tblname": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().param_tblname",
+				"type": "Expression"
+			}
+		}
+	}
+}

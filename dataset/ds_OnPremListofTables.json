@@ -5,20 +5,8 @@
 			"referenceName": "lnk_OnPrem_",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"p_TableName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "SqlServerTable",
-		"schema": [],
-		"typeProperties": {
-			"schema": "dbo",
-			"table": {
-				"value": "@dataset().p_TableName",
-				"type": "Expression"
-			}
-		}
+		"schema": []
 	}
 }
