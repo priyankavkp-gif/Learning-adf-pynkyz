@@ -4,8 +4,8 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"containerUri": "https://pynkyzstrgacct.blob.core.windows.net/input-files",
-			"authenticationType": "Anonymous"
+			"serviceEndpoint": "https://pynkyzstrgacct.blob.core.windows.net/",
+			"accountKind": "StorageV2"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
