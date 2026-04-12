@@ -5,6 +5,18 @@
 		"factoryName": {
 			"value": "ADF-pynkyz"
 		},
+		"lnk_Learn_SQLDB_password": {
+			"value": ""
+		},
+		"lnk_OnPrem__password": {
+			"value": ""
+		},
+		"lnk_SQLDB_HRDB_password": {
+			"value": ""
+		},
+		"lnk_SalesDB_password": {
+			"value": ""
+		},
 		"lnk_Source_adf_DB_password": {
 			"value": ""
 		},
@@ -14,14 +26,53 @@
 		"lnk_blobstrg_connectionString": {
 			"value": ""
 		},
+		"lnk_pinkzsql_password": {
+			"value": ""
+		},
 		"lnk_pynkyzstrgacct_connectionString": {
 			"value": ""
 		},
 		"link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint": {
 			"value": "https://pynkyzstrgacct.blob.core.windows.net/"
 		},
+		"lnk_Learn_SQLDB_properties_typeProperties_server": {
+			"value": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_database": {
+			"value": "Learn_SQLDB"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_userName": {
+			"value": "DESKTOPDB89R7LSQLA"
+		},
 		"lnk_ODataResource_properties_typeProperties_url": {
 			"value": "https://services.odata.org/TripPinRESTierService/"
+		},
+		"lnk_OnPrem__properties_typeProperties_server": {
+			"value": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_OnPrem__properties_typeProperties_database": {
+			"value": "HR_db"
+		},
+		"lnk_OnPrem__properties_typeProperties_userName": {
+			"value": "DESKTOPDB89R7LSQLA"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_server": {
+			"value": "pinkzsql.database.windows.net"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_database": {
+			"value": "HR_DB"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_userName": {
+			"value": "pinkz"
+		},
+		"lnk_SalesDB_properties_typeProperties_server": {
+			"value": "pinkzsql.database.windows.net"
+		},
+		"lnk_SalesDB_properties_typeProperties_database": {
+			"value": "SalesDB"
+		},
+		"lnk_SalesDB_properties_typeProperties_userName": {
+			"value": "pinkz"
 		},
 		"lnk_Source_adf_DB_properties_typeProperties_server": {
 			"value": "pinkz.database.windows.net"
@@ -39,6 +90,15 @@
 			"value": "Target-adf-DB"
 		},
 		"lnk_Target_adf_DB_properties_typeProperties_userName": {
+			"value": "pinkz"
+		},
+		"lnk_pinkzsql_properties_typeProperties_server": {
+			"value": "pinkzsql.database.windows.net"
+		},
+		"lnk_pinkzsql_properties_typeProperties_database": {
+			"value": "Source_DB"
+		},
+		"lnk_pinkzsql_properties_typeProperties_userName": {
 			"value": "pinkz"
 		},
 		"containerUri": {

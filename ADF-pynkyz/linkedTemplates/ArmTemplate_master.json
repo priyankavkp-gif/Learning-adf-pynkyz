@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-pynkyz"
 		},
+		"lnk_Learn_SQLDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_Learn_SQLDB'"
+		},
+		"lnk_OnPrem__password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_OnPrem_'"
+		},
+		"lnk_SQLDB_HRDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_SQLDB_HRDB'"
+		},
+		"lnk_SalesDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_SalesDB'"
+		},
 		"lnk_Source_adf_DB_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'lnk_Source_adf_DB'"
@@ -19,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'lnk_blobstrg'"
 		},
+		"lnk_pinkzsql_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_pinkzsql'"
+		},
 		"lnk_pynkyzstrgacct_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'lnk_pynkyzstrgacct'"
@@ -27,9 +47,57 @@
 			"type": "string",
 			"defaultValue": "https://pynkyzstrgacct.blob.core.windows.net/"
 		},
+		"lnk_Learn_SQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Learn_SQLDB"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DESKTOPDB89R7LSQLA"
+		},
 		"lnk_ODataResource_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/TripPinRESTierService/"
+		},
+		"lnk_OnPrem__properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_OnPrem__properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HR_db"
+		},
+		"lnk_OnPrem__properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DESKTOPDB89R7LSQLA"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HR_DB"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
+		},
+		"lnk_SalesDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_SalesDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SalesDB"
+		},
+		"lnk_SalesDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
 		},
 		"lnk_Source_adf_DB_properties_typeProperties_server": {
 			"type": "string",
@@ -52,6 +120,18 @@
 			"defaultValue": "Target-adf-DB"
 		},
 		"lnk_Target_adf_DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
+		},
+		"lnk_pinkzsql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_pinkzsql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Source_DB"
+		},
+		"lnk_pinkzsql_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "pinkz"
 		},
@@ -82,6 +162,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"lnk_SQLDB_HRDB_password": {
+						"value": "[parameters('lnk_SQLDB_HRDB_password')]"
+					},
+					"lnk_SalesDB_password": {
+						"value": "[parameters('lnk_SalesDB_password')]"
+					},
 					"lnk_Source_adf_DB_password": {
 						"value": "[parameters('lnk_Source_adf_DB_password')]"
 					},
@@ -91,14 +177,41 @@
 					"lnk_blobstrg_connectionString": {
 						"value": "[parameters('lnk_blobstrg_connectionString')]"
 					},
+					"lnk_pinkzsql_password": {
+						"value": "[parameters('lnk_pinkzsql_password')]"
+					},
 					"lnk_pynkyzstrgacct_connectionString": {
 						"value": "[parameters('lnk_pynkyzstrgacct_connectionString')]"
+					},
+					"lnk_Learn_SQLDB_password": {
+						"value": "[parameters('lnk_Learn_SQLDB_password')]"
+					},
+					"lnk_OnPrem__password": {
+						"value": "[parameters('lnk_OnPrem__password')]"
 					},
 					"link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('link_pynkyzstrgacct_properties_typeProperties_serviceEndpoint')]"
 					},
 					"lnk_ODataResource_properties_typeProperties_url": {
 						"value": "[parameters('lnk_ODataResource_properties_typeProperties_url')]"
+					},
+					"lnk_SQLDB_HRDB_properties_typeProperties_server": {
+						"value": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_server')]"
+					},
+					"lnk_SQLDB_HRDB_properties_typeProperties_database": {
+						"value": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_database')]"
+					},
+					"lnk_SQLDB_HRDB_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_userName')]"
+					},
+					"lnk_SalesDB_properties_typeProperties_server": {
+						"value": "[parameters('lnk_SalesDB_properties_typeProperties_server')]"
+					},
+					"lnk_SalesDB_properties_typeProperties_database": {
+						"value": "[parameters('lnk_SalesDB_properties_typeProperties_database')]"
+					},
+					"lnk_SalesDB_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_SalesDB_properties_typeProperties_userName')]"
 					},
 					"lnk_Source_adf_DB_properties_typeProperties_server": {
 						"value": "[parameters('lnk_Source_adf_DB_properties_typeProperties_server')]"
@@ -117,10 +230,57 @@
 					},
 					"lnk_Target_adf_DB_properties_typeProperties_userName": {
 						"value": "[parameters('lnk_Target_adf_DB_properties_typeProperties_userName')]"
+					},
+					"lnk_pinkzsql_properties_typeProperties_server": {
+						"value": "[parameters('lnk_pinkzsql_properties_typeProperties_server')]"
+					},
+					"lnk_pinkzsql_properties_typeProperties_database": {
+						"value": "[parameters('lnk_pinkzsql_properties_typeProperties_database')]"
+					},
+					"lnk_pinkzsql_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_pinkzsql_properties_typeProperties_userName')]"
+					},
+					"lnk_Learn_SQLDB_properties_typeProperties_server": {
+						"value": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_server')]"
+					},
+					"lnk_Learn_SQLDB_properties_typeProperties_database": {
+						"value": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_database')]"
+					},
+					"lnk_Learn_SQLDB_properties_typeProperties_userName": {
+						"value": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_userName')]"
+					},
+					"lnk_OnPrem__properties_typeProperties_server": {
+						"value": "[parameters('lnk_OnPrem__properties_typeProperties_server')]"
+					},
+					"lnk_OnPrem__properties_typeProperties_database": {
+						"value": "[parameters('lnk_OnPrem__properties_typeProperties_database')]"
+					},
+					"lnk_OnPrem__properties_typeProperties_userName": {
+						"value": "[parameters('lnk_OnPrem__properties_typeProperties_userName')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "ADF-pynkyz_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-pynkyz_ArmTemplate_0')]"
+			]
 		}
 	]
 }

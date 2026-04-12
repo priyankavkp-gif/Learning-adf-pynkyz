@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-pynkyz"
 		},
+		"lnk_Learn_SQLDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_Learn_SQLDB'"
+		},
+		"lnk_OnPrem__password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_OnPrem_'"
+		},
+		"lnk_SQLDB_HRDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_SQLDB_HRDB'"
+		},
+		"lnk_SalesDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_SalesDB'"
+		},
 		"lnk_Source_adf_DB_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'lnk_Source_adf_DB'"
@@ -19,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'lnk_blobstrg'"
 		},
+		"lnk_pinkzsql_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnk_pinkzsql'"
+		},
 		"lnk_pynkyzstrgacct_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'lnk_pynkyzstrgacct'"
@@ -27,9 +47,57 @@
 			"type": "string",
 			"defaultValue": "https://pynkyzstrgacct.blob.core.windows.net/"
 		},
+		"lnk_Learn_SQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Learn_SQLDB"
+		},
+		"lnk_Learn_SQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DESKTOPDB89R7LSQLA"
+		},
 		"lnk_ODataResource_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://services.odata.org/TripPinRESTierService/"
+		},
+		"lnk_OnPrem__properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DB89R7L\\SQLEXPRESS"
+		},
+		"lnk_OnPrem__properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HR_db"
+		},
+		"lnk_OnPrem__properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DESKTOPDB89R7LSQLA"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HR_DB"
+		},
+		"lnk_SQLDB_HRDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
+		},
+		"lnk_SalesDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_SalesDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SalesDB"
+		},
+		"lnk_SalesDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
 		},
 		"lnk_Source_adf_DB_properties_typeProperties_server": {
 			"type": "string",
@@ -54,6 +122,18 @@
 		"lnk_Target_adf_DB_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "pinkz"
+		},
+		"lnk_pinkzsql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "pinkzsql.database.windows.net"
+		},
+		"lnk_pinkzsql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Source_DB"
+		},
+		"lnk_pinkzsql_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "pinkz"
 		}
 	},
 	"variables": {
@@ -61,197 +141,14 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_CheckFileExists_orNot_SendEmail')]",
+			"name": "[concat(parameters('factoryName'), '/pl_CreateCSV_fromOnPremDB')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Get Metadata HR_Dept",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_HRDept",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"exists",
-								"itemName"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata HR_Dept",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@activity('Get Metadata HR_Dept').output.exists\n",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "WebActivity_FileNotExists",
-									"type": "WebActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"method": "POST",
-										"headers": {},
-										"url": "https://prod-59.eastus2.logic.azure.com:443/workflows/fedc1c299e7c4d2b8f50491eead1e7a4/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=hniTjBS6kUlKr2Kz9WIuuJHAGzbRHUJMwBk5C5iWXiY",
-										"body": {
-											"value": "concat{\n\"FileName\":\"{@activity('Get Metadata HR_Dept').output.itemName}\",\n\"FileExists\":\" does not exists\"\n\n}",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "WebActivity_SendEmail_FileDetails",
-									"type": "WebActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"method": "POST",
-										"headers": {},
-										"url": "https://prod-59.eastus2.logic.azure.com:443/workflows/fedc1c299e7c4d2b8f50491eead1e7a4/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=hniTjBS6kUlKr2Kz9WIuuJHAGzbRHUJMwBk5C5iWXiY",
-										"body": {
-											"value": "{\n   \"FileName\":\"@{activity('Get Metadata HR_Dept').output.itemName}\",\n   \"PipelineName\":\"@{pipeline().Pipeline}\",\n   \"DataFactory Name\":\"@{pipeline().DataFactory}\",\n   \"FileExists\":\"File Exists in Blob, go ahead with loading data\"\n}",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_HRDept')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_ReadFileFromStorage')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "WebActivity_Read_Blob_StorageFile",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "GET",
-							"headers": {
-								"x-ms-version": "2017-11-09",
-								"x-ms-blob-type": "BlockBlob"
-							},
-							"url": "https://pynkyzstrgacct.blob.core.windows.net/input-files/HR_Dept.txt",
-							"authentication": {
-								"type": "MSI",
-								"resource": "https://storage.azure.com/"
-							}
-						}
-					},
-					{
-						"name": "Set variable Save contents of HR_Dept",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "WebActivity_Read_Blob_StorageFile",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "FileContent",
-							"value": {
-								"value": "@activity('WebActivity_Read_Blob_StorageFile').output.response",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"FileContent": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_ReadfromOData_UsingCopyActivity')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data from OData",
-						"type": "Copy",
+						"name": "Lookup ListOfTableNames",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -263,154 +160,25 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "ODataSource",
-								"query": "\"$select=Name, IcaoCode\"",
-								"httpRequestTimeout": "00:05:00"
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "Select name from sys.tables",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ODataResourceConnector",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_snk_OData_People",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ODataResourceConnector')]",
-				"[concat(variables('factoryId'), '/datasets/ds_snk_OData_People')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_ReadfromOData_UsingWebActivity')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "WebActivity-readfromOData",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "GET",
-							"headers": {},
-							"url": "https://services.odata.org/TripPinRESTierService/People('russellwhyte')"
-						}
-					},
-					{
-						"name": "Set variable - save contents from Web Activity",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "WebActivity-readfromOData",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "OData_FileContent",
-							"value": {
-								"value": "@string(activity('WebActivity-readfromOData').output)",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"OData_FileContent": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_Send File as attachment')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadatafrom input-files",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_input_files",
+								"referenceName": "ds_ListofTables",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
-							"fieldList": [
-								"childItems",
-								"itemName"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
+							"firstRowOnly": false
 						}
 					},
 					{
-						"name": "loop thru all files input-files",
+						"name": "Loop thru all tableNames from Learn_SQLDB",
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Get Metadatafrom input-files",
+								"activity": "Lookup ListOfTableNames",
 								"dependencyConditions": [
 									"Completed"
 								]
@@ -419,39 +187,15 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Get Metadatafrom input-files').output.childItems",
+								"value": "@activity('Lookup ListOfTableNames').output.value",
 								"type": "Expression"
 							},
 							"isSequential": true,
 							"activities": [
 								{
-									"name": "Set variable",
-									"type": "SetVariable",
+									"name": "Copy data from onprem SQL DB to Blob",
+									"type": "Copy",
 									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "FileFullPath",
-										"value": {
-											"value": "@concat('/input-files/',item().Name)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Web send email with File contents",
-									"type": "WebActivity",
-									"dependsOn": [
-										{
-											"activity": "Set variable",
-											"dependencyConditions": [
-												"Completed"
-											]
-										}
-									],
 									"policy": {
 										"timeout": "0.12:00:00",
 										"retry": 0,
@@ -461,138 +205,56 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"method": "POST",
-										"headers": {},
-										"url": "https://prod-40.eastus2.logic.azure.com:443/workflows/c07cf5a57cdf4681aaeff9ea6bcb46e2/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=Y0NbMPlIRPpNWoWyVrx58-cLkvNymdhpkJFm30_YXj4",
-										"body": {
-											"value": "{\n\"FileFullPath\":\"@{variables('FileFullPath')}\",\n  \"PipelineName\":\"@{pipeline().Pipeline}\",\n  \"DataFactory Name\":\"@{pipeline().DataFactory}\",\n  \"FileName\":\"@{activity('Get Metadatafrom input-files').output.itemName}\"\n  \n}",
-											"type": "Expression"
+										"source": {
+											"type": "SqlServerSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
 										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"FileFullPath": {
-						"type": "String"
-					},
-					"FolderName": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_input_files')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_SendFileasAttachment_UsingWebActivity')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadatafrom input-files",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_input_files",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems",
-								"itemName"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "loop thru all files input-files",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadatafrom input-files",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadatafrom input-files').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Set variable",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
 									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "FileFullPath",
-										"value": {
-											"value": "@concat('/input-files/',item().Name)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Web send email with File contents",
-									"type": "WebActivity",
-									"dependsOn": [
+									"inputs": [
 										{
-											"activity": "Set variable",
-											"dependencyConditions": [
-												"Completed"
-											]
+											"referenceName": "ds_Employee_Dept",
+											"type": "DatasetReference",
+											"parameters": {
+												"P_tablename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
 										}
 									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"method": "POST",
-										"headers": {},
-										"url": "https://prod-40.eastus2.logic.azure.com:443/workflows/c07cf5a57cdf4681aaeff9ea6bcb46e2/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=Y0NbMPlIRPpNWoWyVrx58-cLkvNymdhpkJFm30_YXj4",
-										"body": {
-											"value": "{\n\"FileFullPath\":\"@{variables('FileFullPath')}\",\n  \"PipelineName\":\"@{pipeline().Pipeline}\",\n  \"DataFactory Name\":\"@{pipeline().DataFactory}\",\n  \"FileName\":\"@{activity('Get Metadatafrom input-files').output.itemName}\"\n \n}",
-											"type": "Expression"
+									"outputs": [
+										{
+											"referenceName": "ds_snk_CSVfiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"p_FileName": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
 										}
-									}
+									]
 								}
 							]
 						}
@@ -601,76 +263,24 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"variables": {
-					"FileFullPath": {
-						"type": "String"
-					}
-				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_input_files')]"
+				"[concat(variables('factoryId'), '/datasets/ds_ListofTables')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Employee_Dept')]",
+				"[concat(variables('factoryId'), '/datasets/ds_snk_CSVfiles')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_WebActivityOutput_ToBlob')]",
+			"name": "[concat(parameters('factoryName'), '/pl_ExecuteSQLstmts_inBlob')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Web_Dummyjson",
-						"type": "WebActivity",
+						"name": "Lookup sqlstmts file",
+						"type": "Lookup",
 						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "GET",
-							"headers": {},
-							"url": "https://dummyjson.com/products"
-						}
-					},
-					{
-						"name": "Set variable DummyjsonProducts",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Web_Dummyjson",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_products",
-							"value": {
-								"value": "@{activity('Web_Dummyjson').output}",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Copy data from web to blob",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set variable DummyjsonProducts",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -682,15 +292,6 @@
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
-								"additionalColumns": [
-									{
-										"name": "mycolumnfromdummyjson",
-										"value": {
-											"value": "@variables('var_products')",
-											"type": "Expression"
-										}
-									}
-								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
@@ -700,137 +301,650 @@
 									"type": "DelimitedTextReadSettings"
 								}
 							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_web_to_blob",
+							"dataset": {
+								"referenceName": "ds_sqlstmts_sqlfiles",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach_loop thru all sqlstmts",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup sqlstmts file",
+								"dependencyConditions": [
+									"Completed"
+								]
 							}
 						],
-						"outputs": [
-							{
-								"referenceName": "ds_web_to_outputBlob",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup sqlstmts file').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Lookup_ExecuteSQLstmts",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat(item().SQLStatements,' Select 1 as output')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_SalesDB",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"variables": {
-					"var_products": {
-						"type": "String"
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqlstmts_sqlfiles')]",
+				"[concat(variables('factoryId'), '/datasets/ds_SalesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_ExecuteStoredProc_UsingSToredProcActivity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spUpdate]",
+							"storedProcedureParameters": {
+								"City": {
+									"value": "Ahmedabad",
+									"type": "String"
+								},
+								"id": {
+									"value": "7",
+									"type": "Int32"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lnk_SalesDB",
+							"type": "LinkedServiceReference"
+						}
 					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_web_to_blob')]",
-				"[concat(variables('factoryId'), '/datasets/ds_web_to_outputBlob')]"
+				"[concat(variables('factoryId'), '/linkedServices/lnk_SalesDB')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ODataResourceConnector')]",
+			"name": "[concat(parameters('factoryName'), '/pl_LoopthruMultiple storedProcs_CreateFiles')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup tbl_SPList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "Select 'EXEC '+sp_Name+' '''+param_value+'''' as sqlstmt,\nFileName+'_'+ CAST(CAST(getdate() as date) as varchar) as FileName_wdate\nfrom tbl_SPList\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_SalesDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "LoopThruStoredProcs",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup tbl_SPList",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup tbl_SPList').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy data from azSql to Blbstrg",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@item().sqlstmt",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_SalesDB",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds__blob_SalesDBFiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"p_FileName": {
+													"value": "@item().FileName_wdate",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_SalesDB')]",
+				"[concat(variables('factoryId'), '/datasets/ds__blob_SalesDBFiles')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_Onprem_toAzSQLDB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_HRDB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "Select name from sys.tables",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_OnPremHRDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach_Loopthuralltables",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_HRDB",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_HRDB').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy data from OnPrem to AzSQLDB",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": {
+												"value": "Select * from @item().name",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_OnPremListofTables",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_SQLDB_pinkyz",
+											"type": "DatasetReference",
+											"parameters": {
+												"param_tblname": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_OnPremHRDB')]",
+				"[concat(variables('factoryId'), '/datasets/ds_OnPremListofTables')]",
+				"[concat(variables('factoryId'), '/datasets/ds_SQLDB_pinkyz')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_PreventEmptyFileCreation')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupLearn_SQLDB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "Select name from sys.tables",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_tbl_Orders",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "If Condition2",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "LookupLearn_SQLDB",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@contains(activity('LookupLearn_SQLDB').output,'firstrow')",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_learnsqlDB",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_snk_tblOrders",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_tbl_Orders')]",
+				"[concat(variables('factoryId'), '/datasets/ds_learnsqlDB')]",
+				"[concat(variables('factoryId'), '/datasets/ds_snk_tblOrders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_Employee_Dept')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "lnk_ODataResource",
+					"referenceName": "lnk_Learn_SQLDB",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"P_tablename": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
-				"type": "ODataResource",
+				"type": "SqlServerTable",
 				"schema": [],
 				"typeProperties": {
-					"path": "Airports"
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().P_tablename",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/lnk_ODataResource')]"
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_HRDept')]",
+			"name": "[concat(parameters('factoryName'), '/ds_LearnSQLDB_ListofTables')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "link_pynkyzstrgacct",
+					"referenceName": "lnk_Learn_SQLDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "HR_Dept.txt",
-						"container": "input-files"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_ListofTables')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
 				},
-				"schema": [
-					{
-						"name": "EmployeeID",
-						"type": "String"
-					},
-					{
-						"name": "FirstName",
-						"type": "String"
-					},
-					{
-						"name": "LastName",
-						"type": "String"
-					},
-					{
-						"name": "Department",
-						"type": "String"
-					},
-					{
-						"name": "Role",
-						"type": "String"
-					},
-					{
-						"name": "Email",
-						"type": "String"
-					},
-					{
-						"name": "Phone",
-						"type": "String"
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_OnPremHRDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_OnPrem_",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_OnPrem_')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_OnPremListofTables')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_OnPrem_",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_OnPrem_')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_SQLDB_pinkyz')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_SQLDB_HRDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"param_tblname": {
+						"type": "string"
 					}
-				]
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().param_tblname",
+						"type": "Expression"
+					}
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/link_pynkyzstrgacct')]"
+				"[concat(variables('factoryId'), '/linkedServices/lnk_SQLDB_HRDB')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_input_files')]",
+			"name": "[concat(parameters('factoryName'), '/ds_SalesDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_SalesDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_SalesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds__blob_SalesDBFiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -838,39 +952,20 @@
 					"referenceName": "link_pynkyzstrgacct",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "input-files"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/link_pynkyzstrgacct')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_snk_OData_People')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "link_pynkyzstrgacct",
-					"type": "LinkedServiceReference"
+				"parameters": {
+					"p_FileName": {
+						"type": "string"
+					}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "OData_File.txt",
+						"fileName": {
+							"value": "@dataset().p_FileName",
+							"type": "Expression"
+						},
 						"container": "output-files"
 					},
 					"columnDelimiter": ",",
@@ -885,7 +980,46 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_web_to_blob')]",
+			"name": "[concat(parameters('factoryName'), '/ds_cpy_src_learnsqldb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_learnsqlDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tbl_Orders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_snk_CSVfiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -893,13 +1027,21 @@
 					"referenceName": "link_pynkyzstrgacct",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"p_FileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "TrialProd.txt",
-						"container": "input-files"
+						"fileName": {
+							"value": "@dataset().p_FileName",
+							"type": "Expression"
+						},
+						"container": "output-files"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -913,7 +1055,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_web_to_outputBlob')]",
+			"name": "[concat(parameters('factoryName'), '/ds_snk_tblOrders')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -926,7 +1068,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Products_fromDummyJson.json",
 						"container": "output-files"
 					},
 					"columnDelimiter": ",",
@@ -938,6 +1079,139 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/link_pynkyzstrgacct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqlstmts_sqlfiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "link_pynkyzstrgacct",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sqlstmts.txt",
+						"container": "sql-files"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/link_pynkyzstrgacct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tbl_Orders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/foreach_lkp_src')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"for_p_tblname": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().for_p_tblname",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/snk_ds_Files')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "link_pynkyzstrgacct",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"p_FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().p_FileName",
+							"type": "Expression"
+						},
+						"container": "output-files"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/link_pynkyzstrgacct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/src_ds_LearnSQLDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnk_Learn_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnk_Learn_SQLDB')]"
 			]
 		},
 		{
@@ -955,6 +1229,34 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/lnk_Learn_SQLDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_server')]",
+					"database": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('lnk_Learn_SQLDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnk_Learn_SQLDB_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "ADFSelfHostedIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ADFSelfHostedIR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/lnk_ODataResource')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -964,6 +1266,78 @@
 				"typeProperties": {
 					"url": "[parameters('lnk_ODataResource_properties_typeProperties_url')]",
 					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lnk_OnPrem_')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('lnk_OnPrem__properties_typeProperties_server')]",
+					"database": "[parameters('lnk_OnPrem__properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('lnk_OnPrem__properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnk_OnPrem__password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "ADFSelfHostedIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ADFSelfHostedIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lnk_SQLDB_HRDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_server')]",
+					"database": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('lnk_SQLDB_HRDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnk_SQLDB_HRDB_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lnk_SalesDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('lnk_SalesDB_properties_typeProperties_server')]",
+					"database": "[parameters('lnk_SalesDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('lnk_SalesDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnk_SalesDB_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -1026,6 +1400,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/lnk_pinkzsql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('lnk_pinkzsql_properties_typeProperties_server')]",
+					"database": "[parameters('lnk_pinkzsql_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('lnk_pinkzsql_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnk_pinkzsql_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/lnk_pynkyzstrgacct')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1035,6 +1431,16 @@
 				"typeProperties": {
 					"connectionString": "[parameters('lnk_pynkyzstrgacct_connectionString')]"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADFSelfHostedIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
 			},
 			"dependsOn": []
 		}
