@@ -1,15 +1,15 @@
 {
-	"name": "ODataResourceConnector",
+	"name": "ds_tbl_Orders",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "lnk_ODataResource",
+			"referenceName": "lnk_Learn_SQLDB",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "ODataResource",
+		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
-			"path": "Airports"
+			"schema": "dbo"
 		}
 	}
 }

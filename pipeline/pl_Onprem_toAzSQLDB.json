@@ -1,10 +1,10 @@
 {
-	"name": "pl_CopyMultipleFiles_toDB",
+	"name": "pl_Onprem_toAzSQLDB",
 	"properties": {
 		"activities": [
 			{
-				"name": "Get Metadata",
-				"type": "GetMetadata",
+				"name": "Lookup_HRDB",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,29 +15,25 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "Select name from sys.tables",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
 					"dataset": {
-						"referenceName": "ds_inputfiles",
+						"referenceName": "ds_OnPremHRDB",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"childItems"
-					],
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
+					"firstRowOnly": false
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEach_Loopthuralltables",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata",
+						"activity": "Lookup_HRDB",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -46,13 +42,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata').output.childItems",
+						"value": "@activity('Lookup_HRDB').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Copy data from OnPrem to AzSQLDB",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -65,15 +61,13 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "Select * from @item().name",
+										"type": "Expression"
 									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "AzureSqlSink",
@@ -94,23 +88,17 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_pynkyzstrg_inputfiles",
-									"type": "DatasetReference",
-									"parameters": {
-										"p_FileName": {
-											"value": "@item().Name",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "ds_OnPremListofTables",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_snk_db_files",
+									"referenceName": "ds_SQLDB_pinkyz",
 									"type": "DatasetReference",
 									"parameters": {
-										"p_TblName": {
-											"value": "@item().Name",
+										"param_tblname": {
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -121,9 +109,6 @@
 				}
 			}
 		],
-		"folder": {
-			"name": "GetMetaData-Activity"
-		},
 		"annotations": []
 	}
 }

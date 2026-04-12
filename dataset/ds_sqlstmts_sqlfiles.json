@@ -1,5 +1,5 @@
 {
-	"name": "ds_web_to_outputBlob",
+	"name": "ds_sqlstmts_sqlfiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "link_pynkyzstrgacct",
@@ -10,13 +10,13 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Products_fromDummyJson.json",
-				"container": "output-files"
+				"fileName": "sqlstmts.txt",
+				"container": "sql-files"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			"quoteChar": ""
 		},
 		"schema": []
 	}

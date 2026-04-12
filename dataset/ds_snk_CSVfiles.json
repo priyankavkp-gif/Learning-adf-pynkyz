@@ -1,5 +1,5 @@
 {
-	"name": "ds_pynkyzstrg_inputfiles",
+	"name": "ds_snk_CSVfiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "link_pynkyzstrgacct",
@@ -19,30 +19,13 @@
 					"value": "@dataset().p_FileName",
 					"type": "Expression"
 				},
-				"container": "input-files"
+				"container": "output-files"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "ProductID",
-				"type": "String"
-			},
-			{
-				"name": "ProductName",
-				"type": "String"
-			},
-			{
-				"name": "CategoryID",
-				"type": "String"
-			},
-			{
-				"name": "Price",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

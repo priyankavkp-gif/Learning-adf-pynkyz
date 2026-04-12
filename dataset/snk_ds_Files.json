@@ -1,16 +1,25 @@
 {
-	"name": "ds_input_files",
+	"name": "snk_ds_Files",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "link_pynkyzstrgacct",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"p_FileName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "input-files"
+				"fileName": {
+					"value": "@dataset().p_FileName",
+					"type": "Expression"
+				},
+				"container": "output-files"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
