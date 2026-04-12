@@ -63,7 +63,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "Select * from @item().name",
+										"value": "Select * from @{item().name}",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
