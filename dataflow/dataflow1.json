@@ -1,0 +1,70 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json_PatientHospitalDepts",
+						"type": "DatasetReference"
+					},
+					"name": "srcJsonData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_PatientHospitalDepts",
+						"type": "DatasetReference"
+					},
+					"name": "sinkblobcsv",
+					"rejectedDataLinkedService": {
+						"referenceName": "link_pynkyzstrgacct",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "flattenjson"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          hospital as (name as string, location as (city as string, state as string, country as string), departments as (name as string, head as (id as string, name as string), patients as (id as string, name as string, status as string)[])[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> srcJsonData",
+				"srcJsonData foldDown(unrollMultiple(hospital.departments,hospital.departments.patients),",
+				"     mapColumn(",
+				"          hospital,",
+				"          hospital_name = hospital.name,",
+				"          location = hospital.location,",
+				"          city = hospital.location.city,",
+				"          state = hospital.location.state,",
+				"          country = hospital.location.country,",
+				"          departments = hospital.departments,",
+				"          dept_name = hospital.departments.name,",
+				"          Head = hospital.departments.head,",
+				"          dept_Head_ID = hospital.departments.head.id,",
+				"          dept_head_name = hospital.departments.head.name,",
+				"          patients = hospital.departments.patients,",
+				"          PatientID = hospital.departments.patients.id,",
+				"          Patient_Name = hospital.departments.patients.name,",
+				"          PatientStatus = hospital.departments.patients.status",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenjson",
+				"flattenjson sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[''],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkblobcsv"
+			]
+		}
+	}
+}

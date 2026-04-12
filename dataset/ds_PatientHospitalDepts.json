@@ -1,0 +1,21 @@
+{
+	"name": "ds_PatientHospitalDepts",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "link_pynkyzstrgacct",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
