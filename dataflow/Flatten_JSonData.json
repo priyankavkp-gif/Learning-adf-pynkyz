@@ -60,7 +60,7 @@
 				"     skipDuplicateMapOutputs: false) ~> flattenjson",
 				"flattenjson sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:[''],",
+				"     partitionFileNames:['PatientHospitalDeptFlattenedSink'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> sinkblobcsv"
